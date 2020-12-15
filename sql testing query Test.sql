@@ -40,18 +40,7 @@ WITH Latest_Work_Order AS
                  WHEN pos.PRODUCT_ORDER_STATUS_CD IN ('X','CN') THEN 'CANCELLED' 
                  WHEN pos.PRODUCT_ORDER_STATUS_CD = 'R' THEN 'RESCHEDULED' 
                  WHEN pos.PRODUCT_ORDER_STATUS_CD = 'H' THEN 'HELD' 
-            ELSE pos.PRODUCT_ORDER_STATUS_CD END AS SOLO_ORDER_STATUS_DESC, 
-            CASE WHEN bi.source_channel = 'C' THEN 'CRM' 
-                 WHEN bi.source_channel = 'G' THEN 'GATEWAY' 
-                 WHEN bi.source_channel = 'A' THEN 'STVA' 
-                 WHEN bi.source_channel = 'E' THEN 'ECOMMERCE' 
-                 WHEN bi.source_channel = 'D' THEN 'DIRECT SALES' 
-                 WHEN bi.source_channel = 'G' THEN 'GATEWAY' 
-                 WHEN bi.source_channel = 'I' THEN 'IVR' 
-                 WHEN bi.source_channel = 'N' THEN '.NET' 
-                 WHEN bi.source_channel IS NULL THEN 'BILLER' 
-                 ELSE bi.source_channel 
-            END AS source 
+            ELSE pos.PRODUCT_ORDER_STATUS_CD END AS SOLO_ORDER_STATUS_DESC
             FROM chtr.t_bus_interact bi INNER JOIN Latest_Work_Order lwo ON bi.bus_interact_id = lwo.parent_bus_interact_id 
             INNER JOIN chtr.t_prod_order po ON bi.bus_interact_id = po.product_order_id 
             INNER JOIN chtr.t_prod_order_status pos ON bi.bus_interact_id = pos.product_order_id 
