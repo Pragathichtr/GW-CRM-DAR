@@ -34,13 +34,7 @@ WITH Latest_Work_Order AS
             ( SELECT biller,a.account_num as BILLER_ACCOUNT_NUMBER, a.ACCOUNT_NM as SOLO_ACCOUNT_NAME, va.SERVICE_ADDRESS_LINE_1 as SOLO_ADDRESS_LINE1, va.SERVICE_ADDRESS_LINE_2 as SOLO_ADDRESS_LINE2, 
             va.SERVICE_ADDRESS_CITY as SOLO_CITY, va.SERVICE_ADDRESS_STATE as SOLO_STATE, va.SERVICE_ADDRESS_POSTAL_CODE as SOLO_ZIP, wo.CREATED_BY as SOLO_CREATED_BY, wo.BILLER_SITE as BILLERSITE, 
             pos.PRODUCT_ORDER_STATUS_CD as SOLO_ORDER_STATUS, wo.WORK_ORDER_SCHEDULE_DT as SOLO_SCHEDULE_DATE, wo.WORK_ORDER_WINDOW_DESC as SOLO_SCHEDULE_TIME_SLOT, bi.SOURCE_SYSTEM_ID as BILLER_ORDER_NUMBER, 
-            to_char(wo.create_dttm, 'mm/dd/yyyy') AS CREATED_DATE, A.ACCOUNT_TYPE_CD AS CUST_TYP_CUS, 
-            CASE WHEN pos.PRODUCT_ORDER_STATUS_CD IN ('O','_') THEN 'OPEN' 
-                 WHEN pos.PRODUCT_ORDER_STATUS_CD IN ('C','CP') THEN 'COMPLETE' 
-                 WHEN pos.PRODUCT_ORDER_STATUS_CD IN ('X','CN') THEN 'CANCELLED' 
-                 WHEN pos.PRODUCT_ORDER_STATUS_CD = 'R' THEN 'RESCHEDULED' 
-                 WHEN pos.PRODUCT_ORDER_STATUS_CD = 'H' THEN 'HELD' 
-            ELSE pos.PRODUCT_ORDER_STATUS_CD END AS SOLO_ORDER_STATUS_DESC
+            to_char(wo.create_dttm, 'mm/dd/yyyy') AS CREATED_DATE, A.ACCOUNT_TYPE_CD AS CUST_TYP_CUS
             FROM chtr.t_bus_interact bi INNER JOIN Latest_Work_Order lwo ON bi.bus_interact_id = lwo.parent_bus_interact_id 
             INNER JOIN chtr.t_prod_order po ON bi.bus_interact_id = po.product_order_id 
             INNER JOIN chtr.t_prod_order_status pos ON bi.bus_interact_id = pos.product_order_id 
