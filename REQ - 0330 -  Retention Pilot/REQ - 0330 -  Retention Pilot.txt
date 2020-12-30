@@ -1,0 +1,195 @@
+<form theme="dark">
+  <label>Retention Pilot</label>
+  <fieldset submitButton="false" autoRun="true">
+    <input type="time" token="field1">
+      <label></label>
+      <default>
+        <earliest>-1d@d</earliest>
+        <latest>@d</latest>
+      </default>
+    </input>
+    <input type="checkbox" token="orderType">
+      <label>Order Type</label>
+      <choice value="NEWCONNECT">New Connect</choice>
+      <choice value="Modify">CoS</choice>
+      <choice value="DISCONNECT">Disconnect</choice>
+      <choice value="&quot;Modify Pending&quot;">Modify Pending</choice>
+      <choice value="TRANSFER">Transfer</choice>
+      <choice value="RESTART">Restart</choice>
+      <choice value="CANCEL">Cancel</choice>
+      <choice value="*">All</choice>
+      <delimiter> </delimiter>
+    </input>
+    <input type="checkbox" token="CallCenter">
+      <label>Call Center</label>
+      <choice value="&quot;Akron, OH&quot;">Akron, OH</choice>
+      <choice value="&quot;Appleton, WI&quot;">Appleton, WI</choice>
+      <choice value="&quot;Austin, TX&quot;">Austin, TX</choice>
+      <choice value="&quot;Bridgeton, MO&quot;">Bridgeton, MO</choice>
+      <choice value="&quot;Colorado Springs, CO&quot;">Colorado Springs, CO</choice>
+      <choice value="&quot;Fond Du Lac, WI&quot;">Fond Du Lac, WI</choice>
+      <choice value="&quot;Greenville, SC&quot;">Greenville, SC</choice>
+      <choice value="&quot;San Antonio, TX&quot;">San Antonio, TX</choice>
+      <choice value="&quot;Irving, TX&quot;">Irving, TX</choice>
+      <choice value="&quot;St Ann, MO&quot;">St. Ann, MO</choice>
+      <choice value="&quot;Mililani, HI&quot;">Mililani, HI</choice>
+      <choice value="&quot;Valdosta, GA&quot;">Valdosta, GA</choice>
+      <choice value="*">All</choice>
+      <delimiter> </delimiter>
+    </input>
+    <input type="checkbox" token="Group" searchWhenChanged="true">
+      <label>Group</label>
+      <choice value="&quot;AP-CHTRGWY-Fieldops-Pilot&quot;">Field Ops</choice>
+      <choice value="&quot;AP-CHTRGWY-Manager-Billing AP-CHTRGWY-Manager-Internet-Phone AP-CHTRGWY-Manager-Repair-Video AP-CHTRGWY-Rep-1-BillingRepair AP-CHTRGWY-Rep-1-Repair-Video AP-CHTRGWY-Rep-2-Billing AP-CHTRGWY-Supervisor-BillingRepair&quot;">Customer Service</choice>
+      <choice value="&quot;AP-CHTRGWY-Pilot&quot;">Pilot 1 (Retention)</choice>
+      <choice value="&quot;AP-CHTRGWY-Pilot2&quot;">Pilot 2 (Sup)</choice>
+      <choice value="&quot;AP-CHTRGWY-Pilot3&quot;">Pilot 3 (Rest/Trans/Payment))</choice>
+      <choice value="&quot;AP-CHTRGWY-Rep-3-Sales&quot;">Sales - Rep 3</choice>
+      <choice value="&quot;AP-CHTRGWY-Retail-SDP&quot;">Stores</choice>
+      <choice value="&quot;AP-CHTRGWY-Rep-Retention AP-CHTRGWY-Manager-Retention&quot;">Retention</choice>
+      <choice value="&quot;AP-CHTRGWY-OTM-Rep*&quot;">OTM</choice>
+      <choice value="&quot;*&quot;">All</choice>
+      <delimiter> </delimiter>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <table>
+        <title>Retention Offers</title>
+        <search base="baseSearch">
+          <query>stats count by SelectedOfferName 
+| addcoltotals labelfield=SelectedOfferName label=TOTAL</query>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <format type="number" field="Success Rate">
+          <option name="precision">0</option>
+          <option name="unit">%</option>
+        </format>
+        <format type="number" field="Failure Rate">
+          <option name="precision">0</option>
+          <option name="unit">%</option>
+        </format>
+      </table>
+    </panel>
+    <panel>
+      <chart>
+        <title>Retention Offers</title>
+        <search base="baseSearch">
+          <query>stats count BY SelectedOfferName</query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <table>
+        <title>Retention Components</title>
+        <search base="baseSearch1">
+          <query>stats count by PotentialValueLabel
+| addcoltotals labelfield=PotentialValueLabel label=TOTAL</query>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <format type="number" field="Success Rate">
+          <option name="precision">0</option>
+          <option name="unit">%</option>
+        </format>
+        <format type="number" field="Failure Rate">
+          <option name="precision">0</option>
+          <option name="unit">%</option>
+        </format>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>By Call Center</title>
+        <search base="baseSearch">
+          <query>stats count BY physicalDeliveryOfficeName</query>
+        </search>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.showDataLabels">all</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <table>
+        <title>Groups Submitted</title>
+        <search base="baseSearch">
+          <query>stats count BY Group</query>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Order Type</title>
+        <search base="baseSearch">
+          <query>stats count by orderType</query>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Retention Components Data</title>
+      <table>
+        <search id="baseSearch1">
+          <query>index IN (gateway gateway_ndc gwy_tibco_ndc) (TxCategory=ORDERING.DROPDOWN_INPUT.EDITED AND Value=*retention*) OR (TxCategory=Enterprise.Order.Submit*) 
+| transaction TxRoot keepevicted=true 
+| eval TxResult=mvindex(TxResult,0) 
+| lookup ALLGWYUsers.csv sAMAccountName AS RequestorUserID OUTPUT displayName physicalDeliveryOfficeName department Group 
+| rename OrderType AS orderType 
+| search orderType IN ($orderType$) AND physicalDeliveryOfficeName IN ($CallCenter$) AND Group IN ($Group$) AND TxResult=SUCCESS AND TxCategory=ORDERING.DROPDOWN_INPUT.EDITED AND TxCategory=Enterprise.Order.Submit* AND PotentialValueLabel=Retention*
+| eval orderType=if(orderType=="NEWCONNECT" AND party=="null","MODIFY PENDING",orderType) 
+| eval gtwy_date=strftime(_time,"%Y-%m-%d") 
+| eval gtwy_time=strftime(_time,"%H:%M:%S") 
+| eval BillerAccountNumber="#".BillerAccountNumber 
+| eval BillerOrderNumber="#".BillerOrderNumber 
+| table gtwy_date gtwy_time TxRoot RequestorUserID displayName physicalDeliveryOfficeName department Group OldValue PotentialValueLabel OrderType TxResult BillerAccountNumber BillerOrderNumber InstallationType EnterpriseTransactionId</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Retention Offer ID Data</title>
+      <table>
+        <search id="baseSearch">
+          <query>(index IN (sdp_java ) host=vm0pnbillca* action=SubmitSoloOrder commentText="CREATED BY GATEWAY") OR (index IN (gateway gateway_ndc) (TxCategory=ORDERING.OFFER_SELECTED SelectedOfferID=*) OR (TxCategory=Enterprise.Order.Submit*)) 
+| eval transactionId=coalesce(transactionId,EnterpriseTransactionId) 
+| eval SelectedOfferID=coalesce(SelectedOfferID,offerDefnitionId) 
+| eval RequestorUserID=coalesce(auditUser,RequestorUserID) 
+| transaction transactionId SelectedOfferID RequestorUserID keepevicted=true 
+| search action=SubmitSoloOrder AND TxCategory=Enterprise.Order.Submit* AND SelectedOfferName=Retention* 
+| lookup ALLGWYUsers.csv sAMAccountName AS RequestorUserID OUTPUT displayName physicalDeliveryOfficeName department Group 
+| search orderType IN ($orderType$) AND physicalDeliveryOfficeName IN ($CallCenter$) AND Group IN ($Group$) 
+| eval orderType=if(orderType=="NEWCONNECT" AND party=="null","MODIFY PENDING",orderType) 
+| eval gtwy_date=strftime(_time,"%Y-%m-%d") 
+| eval gtwy_time=strftime(_time,"%H:%M:%S") 
+| eval BillerAccountNumber="#".BillerAccountNumber 
+| eval BillerOrderNumber="#".BillerOrderNumber 
+| table gtwy_date gtwy_time transactionId TxCategory index RequestorUserID displayName physicalDeliveryOfficeName department orderType Group orderActionId SelectedOfferID SelectedOfferName commentText SoloAccountId BillerAccountNumber SoloOrderId BillerOrderNumber InstallationType EnterpriseTransactionId</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>
